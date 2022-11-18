@@ -442,6 +442,10 @@ PrefabInstance:
       value: Enemy
       objectReference: {fileID: 0}
     - target: {fileID: 2505185986212673521, guid: 2ae792025a59d0440b946a3f69da53b2, type: 3}
+      propertyPath: _movePower
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2505185986212673521, guid: 2ae792025a59d0440b946a3f69da53b2, type: 3}
       propertyPath: _targetPlayer
       value: 
       objectReference: {fileID: 147200018}
@@ -577,6 +581,10 @@ PrefabInstance:
     - target: {fileID: 4378759414861082902, guid: 30f7840cea44fdc478f29f244a7de14e, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 4378759414861082908, guid: 30f7840cea44fdc478f29f244a7de14e, type: 3}
+      propertyPath: _pushpower
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 30f7840cea44fdc478f29f244a7de14e, type: 3}

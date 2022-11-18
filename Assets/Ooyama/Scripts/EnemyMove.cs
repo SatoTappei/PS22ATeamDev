@@ -12,8 +12,10 @@ public class EnemyMove : MonoBehaviour
     [SerializeField] string _playerTag = "Player";
     [SerializeField] float _enemysPushPower = 3f;
     [SerializeField] float _waitTimer = 3f;
+    [SerializeField] float _movePower=3f;
     Vector3 _playerpos;
-    Vector3 _forcedir;
+    Vector3 _forceDir;
+    Vector3 _veloDir;
     void Start()
     {
         _rb = GetComponent<Rigidbody>();
@@ -24,8 +26,9 @@ public class EnemyMove : MonoBehaviour
         {
             //プレイヤーとエネミーのポジションからvelocityを演算
             _playerpos = _targetPlayer.transform.position;
-            _rb.velocity = new Vector3(_playerpos.x - transform.position.x,
-            _playerpos.y-transform.position.y, _playerpos.z - transform.position.z);
+            _veloDir= new Vector3(_playerpos.x - transform.position.x,
+            _playerpos.y - transform.position.y, _playerpos.z - transform.position.z).normalized;
+            _rb.velocity = new Vector3(_veloDir.x*_movePower,_veloDir.y*_movePower, _veloDir.z*_movePower);
         }
     }
     //プレーヤーとの当たり判定
@@ -36,9 +39,9 @@ public class EnemyMove : MonoBehaviour
             //プレーヤーに当たった時の処理
             _canmove = false;
             _playerpos = collision.gameObject.transform.position;
-            _forcedir = (_playerpos - transform.position).normalized;
+            _forceDir = (_playerpos - transform.position).normalized;
             _playersRb = collision.gameObject.GetComponent<Rigidbody>();
-            _playersRb.AddForce(_forcedir.x*_enemysPushPower, 0, _forcedir.z*_enemysPushPower, ForceMode.Impulse);
+            _playersRb.AddForce(_forceDir.x*_enemysPushPower, 0, _forceDir.z*_enemysPushPower, ForceMode.Impulse);
             StartCoroutine(RestartMove());
         }
     }
