@@ -5,13 +5,16 @@ using UnityEngine;
 public class PlayerMove : MonoBehaviour
 {
     bool _gameover;
-    Rigidbody _PlayerRb;
+    GameObject _enemy;
+    Rigidbody _playerRb;
+    Rigidbody _enemyRb;
     [SerializeField] float _pushpower = 5f;
     [SerializeField] string _enemytag = "Enemy";
-    GameObject Player;
+    Vector3 _enemypos;
+    Vector3 _forcedir;
     void Start()
     {
-        _PlayerRb = GetComponent<Rigidbody>();
+        _playerRb = GetComponent<Rigidbody>();
     }
     void Update()
     {
@@ -20,19 +23,25 @@ public class PlayerMove : MonoBehaviour
             GameOver();
         }
     }
-    void GameOver()
-    {
-
-    }
-    void HitEnemy()
-    {
-
-    }
     private void OnCollisionEnter(Collision collision)
     {
         if(collision.gameObject.tag==_enemytag)
         {
-            HitEnemy();
+            //ìGÇ∆è’ìÀÇµÇΩéûÇÃèàóù
+            _enemy = collision.gameObject;
+            _enemypos = collision.gameObject.transform.position;
+            _forcedir = (_enemypos - transform.position).normalized;
+            _enemyRb = _enemy.GetComponent<Rigidbody>();
+            _enemyRb.AddForce(_forcedir.x*_pushpower, 0,_forcedir.z *_pushpower, ForceMode.Impulse);
         }
+    }
+    void Move()
+    {
+        
+    }
+
+    void GameOver()
+    {
+
     }
 }

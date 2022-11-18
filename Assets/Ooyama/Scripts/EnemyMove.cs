@@ -11,6 +11,7 @@ public class EnemyMove : MonoBehaviour
     [SerializeField] string _playerTag = "Player";
     [SerializeField] float _enemysPushPower = 3f;
     Vector3 _playerpos;
+    Vector3 _forcedir;
     void Start()
     {
         _rb = GetComponent<Rigidbody>();
@@ -24,19 +25,16 @@ public class EnemyMove : MonoBehaviour
             _rb.velocity = new Vector3(_playerpos.x - transform.position.x,0, _playerpos.z - transform.position.z);
         }
     }
-    //プレーヤーに当たった時の処理
-    void HitPlayer()
-    {
-        _player = GameObject.FindGameObjectWithTag(_playerTag);
-        _playersRb = _player.GetComponent<Rigidbody>();
-        _playersRb.AddForce(_enemysPushPower,0,_enemysPushPower,ForceMode.Impulse);
-    }
     //プレーヤーとの当たり判定
     private void OnCollisionEnter(Collision collision)
     {
         if(gameObject.tag==_playerTag)
         {
-            HitPlayer();
+            //プレーヤーに当たった時の処理
+            _playerpos = collision.gameObject.transform.position;
+            _forcedir = (_playerpos - transform.position).normalized;
+            _playersRb = _player.GetComponent<Rigidbody>();
+            _playersRb.AddForce(_forcedir.x*_enemysPushPower, 0, _forcedir.z*_enemysPushPower, ForceMode.Impulse);
         }
     }
 }
