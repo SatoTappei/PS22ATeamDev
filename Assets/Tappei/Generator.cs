@@ -7,30 +7,39 @@ using UnityEngine;
 /// </summary>
 public class Generator : MonoBehaviour
 {
-    /// <summary>ステージを構成する1マスのプレハブ</summary>
-    [SerializeField] GameObject _massPrefab;
+    [Header("ステージを構成するブロックの設定")]
+    [SerializeField] GameObject _blockPrefab;
+    [SerializeField] int _size;
 
-    // ステージの幅と高さ
-    [Header("ステージの大きさの設定")]
+    [Header("ステージの設定")]
     [SerializeField] int _width;
-    [SerializeField] int _height;
+    [SerializeField] int _offsetY;
+
     [Header("波の大きさの設定")]
     [Range(0, 0.1f), SerializeField] float _noisePower;
 
+    /// <summary>
+    /// パーリンノイズの大きさをかける値
+    /// 大きくするとブロック同士の縦幅が広がる
+    /// </summary>
+    readonly int NoiseBase = 10;
+
     void Start()
     {
+        Init();
         Generate();
     }
 
     void Update()
     {
-        
+
     }
 
     /// <summary>初期化</summary>
     void Init()
     {
-
+        // オフセット分Y座標をずらす
+        transform.position += Vector3.up * _offsetY;
     }
 
     /// <summary>生成</summary>
@@ -38,14 +47,16 @@ public class Generator : MonoBehaviour
     {
         for(int z = 0; z < _width; z++)
         {
-            for(int x = 0; x < _height; x++)
+            for(int x = 0; x < _width; x++)
             {
-                float valueX = x;
-                float valueZ = z;
-                float height = Mathf.PerlinNoise(valueX * _noisePower, valueZ * _noisePower);
-                Vector3 pos = new Vector3(valueX - _width / 2, 10 * height, valueZ - _height / 2);
+                // パーリンノイズを使用してブロックの高さを決める
+                float height = Mathf.PerlinNoise(x * _noisePower, z * _noisePower);
+                // ブロックのサイズとステージの幅分ずらして配置する
+                float posX = x * _size - _width / 2 * _size;
+                float posZ = z * _size - _width / 2 * _size;
+                Vector3 pos = new Vector3(posX, NoiseBase * height, posZ);
 
-                Instantiate(_massPrefab, pos, Quaternion.identity, transform);
+                Instantiate(_blockPrefab, pos, Quaternion.identity, transform);
             }
         }
     }

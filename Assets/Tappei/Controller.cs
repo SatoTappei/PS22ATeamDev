@@ -17,6 +17,9 @@ public class Controller : MonoBehaviour
         float hori = Input.GetAxis("Horizontal");
         float vert = Input.GetAxis("Vertical");
 
-        transform.eulerAngles = new Vector3(transform.eulerAngles.x + vert, transform.eulerAngles.y, transform.eulerAngles.z + hori * -1.0f);
+        float rotX = transform.eulerAngles.x + vert;
+        float rotZ = transform.eulerAngles.z  -1.0f * hori;
+
+        transform.eulerAngles = new Vector3(rotX, transform.eulerAngles.y, rotZ);
     }
 }
