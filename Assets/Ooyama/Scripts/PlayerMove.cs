@@ -35,11 +35,6 @@ public class PlayerMove : MonoBehaviour
             _enemyRb.AddForce(_forcedir.x*_pushpower, 0,_forcedir.z *_pushpower, ForceMode.Impulse);
         }
     }
-    void Move()
-    {
-        
-    }
-
     void GameOver()
     {
 
