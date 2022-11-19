@@ -1,15 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
     //Wave,Enemy関連
-    [SerializeField, Header("現在のウェーブ数")] int _nowWave = 1;
+    //WaveプロパティでWaveの値のやり取りをする
+    int _nowWave;
+    public int NowWave //Waveプロパティ
+    {
+        get => _nowWave;
+        private set => _nowWave = value;
+    }
     [SerializeField, Header("最大ウェーブ数")] int _maxWave = 0;
-    [SerializeField,Header("残りのウェーブ数")] int _remainingWave = 0;
-    GameObject[] _enemyArray;
+    int _remainingWave = 0; //残りのWave数
+    GameObject[] _enemyArray;   //敵を入れる配列
 
     //Text関連
     [SerializeField, Header("現在のウェーブのテキスト")] Text _nowWaveText;
@@ -23,6 +27,8 @@ public class UIManager : MonoBehaviour
 
     void Start()
     {
+        //Waveの初期値
+        NowWave = 1;
         //PopMenu 非表示
         _popMenu.SetActive(false);
         _onPopMenu = false;
@@ -32,17 +38,9 @@ public class UIManager : MonoBehaviour
 
     void Update()
     {
-        /*
-        //それぞれの数値を更新していく
-        OutputNowWave();//現在のWave出力
-        OutputRemainingWave();//残りのWave出力
-        OutputEnemyCount();//敵の数出力
-        */
-
         //Popするメニュー
         OnPopMenu();
         OnPopTips();
-
     }
 
     //現在のウェーブを出力する関数
@@ -50,9 +48,9 @@ public class UIManager : MonoBehaviour
     {
         if (EnemyCount() == 0) //もし敵の数が０なら
         {
-            _nowWave++; //ウェーブカウントアップ
+           　NowWave++; //ウェーブカウントアップ
         }
-        _nowWaveText.text = "現在のWave：" + _nowWave.ToString();  // Textに反映
+        _nowWaveText.text = "現在のWave：" + NowWave.ToString();  // Textに反映
     }
 
     //残りのウェーブを数えて出力する関数
@@ -61,7 +59,7 @@ public class UIManager : MonoBehaviour
         _remainingWave = _maxWave;  //残りのウェーブの初期値を設定
         if (_remainingWave != 0) //残りが０出ないとき
         {
-            _remainingWave -= _nowWave; //残りのウェーブを減らす
+            _remainingWave -= NowWave; //残りのウェーブを減らす
         }
         _remainingWaveText.text = "残りのWave：" + _remainingWave.ToString();  // Textに反映
     }

@@ -4,21 +4,28 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
-    [SerializeField, Header("敵のプレハブ")] List<GameObject> _enemyPrefabs;
+    [SerializeField, Header("Spawnerのオブジェクト")] GameObject _spwaner;
+    [SerializeField, Header("Wave数分の敵のプレハブ")] List<GameObject> _enemyPrefabs;
+    Transform _spawnPos;
 
-    void Start()
+    private void Start()
     {
-        
+        _spawnPos = _spwaner.transform;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void EnemySpawn1() 
     {
-        
+        Instantiate(_enemyPrefabs[0], _spawnPos);
     }
 
-    public void EnemySpawn() 
+    public void EnemySpawn2()
     {
 
+        Instantiate(_enemyPrefabs[1], _spawnPos);
+    }
+    public void EnemySpawn3()
+    {
+
+        Instantiate(_enemyPrefabs[2], _spawnPos);
     }
 }
