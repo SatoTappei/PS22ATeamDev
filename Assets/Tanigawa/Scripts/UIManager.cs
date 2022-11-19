@@ -26,6 +26,8 @@ public class UIManager : MonoBehaviour
         //PopMenu 非表示
         _popMenu.SetActive(false);
         _onPopMenu = false;
+        //PopTips 非表示
+        _popTips.SetActive(false);
     }
 
     void Update()
@@ -48,7 +50,7 @@ public class UIManager : MonoBehaviour
         {
             _nowWave++; //ウェーブカウントアップ
         }
-        _nowWaveText.text = "現在のWave数：" + _nowWave.ToString();  // Textに反映
+        _nowWaveText.text = "現在のWave：" + _nowWave.ToString();  // Textに反映
     }
 
     //残りのウェーブを数えて出力する関数
@@ -59,13 +61,13 @@ public class UIManager : MonoBehaviour
         {
             _remainingWave -= _nowWave; //残りのウェーブを減らす
         }
-        _remainingWaveText.text = "残りのウェーブ数：" + _remainingWave.ToString();  // Textに反映
+        _remainingWaveText.text = "残りのWave：" + _remainingWave.ToString();  // Textに反映
     }
 
     //残りの敵の数を出力する関数
     void OutputEnemyCount() 
     {
-        _enemyCountText.text = "残りの敵：" + EnemyCount().ToString(); // Textに反映
+        _enemyCountText.text = "敵：" + EnemyCount().ToString(); // Textに反映
     }
 
     //敵を数えて数を返す関数
@@ -80,7 +82,7 @@ public class UIManager : MonoBehaviour
     //PopMenuを操作するための関数
     void OnPopMenu()
     {
-        if (Input.GetKey(KeyCode.Escape)) //Escapeボタン押されたら
+        if (Input.GetKeyDown(KeyCode.Escape)) //Escapeボタン押されたら
         {
             if (!_onPopMenu)    //bool型_onPopMeneがfalseなら
             {
@@ -100,13 +102,13 @@ public class UIManager : MonoBehaviour
     //PopTipsを操作するための関数
     void OnPopTips() 
     {
-        if (Input.GetKeyDown(KeyCode.Tab)) //Tabボタンが押されている間
+        if (Input.GetKeyDown(KeyCode.Space)) //Spaseボタンが押されている間
         {
             //PopMenu表示
             _popTips.SetActive(true);
         }
 
-        if (Input.GetKeyUp(KeyCode.Tab))  //Tabボタンを話したら
+        if (Input.GetKeyUp(KeyCode.Space))  //Spaseボタンを話したら
         {
             //PopMenu表示
             _popTips.SetActive(false);
