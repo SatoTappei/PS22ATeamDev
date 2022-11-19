@@ -32,10 +32,12 @@ public class UIManager : MonoBehaviour
 
     void Update()
     {
+        /*
         //それぞれの数値を更新していく
         OutputNowWave();//現在のWave出力
         OutputRemainingWave();//残りのWave出力
         OutputEnemyCount();//敵の数出力
+        */
 
         //Popするメニュー
         OnPopMenu();
@@ -44,7 +46,7 @@ public class UIManager : MonoBehaviour
     }
 
     //現在のウェーブを出力する関数
-    void OutputNowWave()
+    public void OutputNowWave()
     {
         if (EnemyCount() == 0) //もし敵の数が０なら
         {
@@ -54,7 +56,7 @@ public class UIManager : MonoBehaviour
     }
 
     //残りのウェーブを数えて出力する関数
-    void OutputRemainingWave() 
+    public void OutputRemainingWave() 
     {
         _remainingWave = _maxWave;  //残りのウェーブの初期値を設定
         if (_remainingWave != 0) //残りが０出ないとき
@@ -65,13 +67,13 @@ public class UIManager : MonoBehaviour
     }
 
     //残りの敵の数を出力する関数
-    void OutputEnemyCount() 
+    public void OutputEnemyCount() 
     {
         _enemyCountText.text = "敵：" + EnemyCount().ToString(); // Textに反映
     }
 
     //敵を数えて数を返す関数
-    int EnemyCount() 
+    public int EnemyCount() 
     {
         //敵を配列に格納
         _enemyArray = GameObject.FindGameObjectsWithTag("Enemy");
