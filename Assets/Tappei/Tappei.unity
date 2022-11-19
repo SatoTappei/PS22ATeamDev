@@ -497,7 +497,7 @@ MonoBehaviour:
   _size: 3
   _width: 20
   _offsetY: 5
-  _noisePower: 0.0396
+  _noisePower: 0.0445
 --- !u!114 &805300354
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -510,6 +510,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a210ba22334055c4cb13b6042b17dcfb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _sensitivity: 20
+  _maxAngle: 15
 --- !u!1 &1353938540
 GameObject:
   m_ObjectHideFlags: 0

@@ -8,7 +8,7 @@ using UnityEngine;
 public class Block : MonoBehaviour
 {
     [Header("ブロックの揺れ幅")]
-    [Range(0, 0.1f), SerializeField] float _amplitude;
+    [SerializeField] float _amplitude;
     float _value;
 
     void Start()
@@ -18,8 +18,9 @@ public class Block : MonoBehaviour
 
     void Update()
     {
+        // ブロックを上下させる
         _value += Time.deltaTime;
-        float posY = transform.localPosition.y + Mathf.Sin(_value) * _amplitude;
+        float posY = transform.localPosition.y + Mathf.Sin(_value) * _amplitude * Time.deltaTime;
         transform.localPosition = new Vector3(transform.localPosition.x, posY, transform.localPosition.z);
     }
 }

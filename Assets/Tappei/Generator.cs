@@ -22,7 +22,7 @@ public class Generator : MonoBehaviour
     /// パーリンノイズの大きさをかける値
     /// 大きくするとブロック同士の縦幅が広がる
     /// </summary>
-    readonly int NoiseBase = 10;
+    readonly int NoiseBase = 5;
 
     void Start()
     {

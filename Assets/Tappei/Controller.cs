@@ -7,6 +7,10 @@ using UnityEngine;
 /// </summary>
 public class Controller : MonoBehaviour
 {
+    [Header("ëÄçÏê´ÇÃê›íË")]
+    [SerializeField] float _sensitivity;
+    [SerializeField] float _maxAngle;
+
     void Start()
     {
         
@@ -17,9 +21,19 @@ public class Controller : MonoBehaviour
         float hori = Input.GetAxis("Horizontal");
         float vert = Input.GetAxis("Vertical");
 
-        float rotX = transform.eulerAngles.x + vert;
-        float rotZ = transform.eulerAngles.z  -1.0f * hori;
+        float angleX = transform.localEulerAngles.x + vert * Time.deltaTime * _sensitivity;
+        float angleZ = transform.localEulerAngles.z - hori * Time.deltaTime * _sensitivity;
 
-        transform.eulerAngles = new Vector3(rotX, transform.eulerAngles.y, rotZ);
+        angleX = ClampAngle(angleX);
+        angleZ = ClampAngle(angleZ);
+
+        transform.localEulerAngles = new Vector3(angleX, 0, angleZ);
+    }
+
+    /// <summary>ClampÇµÇΩílÇï‘Ç∑</summary>
+    float ClampAngle(float angle)
+    {
+        if (angle > 180) angle -= 360;
+        return Mathf.Clamp(angle, -1.0f * _maxAngle, _maxAngle);
     }
 }
