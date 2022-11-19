@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// ステージを動かすスクリプト
+/// ステージを動かす
 /// </summary>
 public class Controller : MonoBehaviour
 {

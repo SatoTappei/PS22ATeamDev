@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// ステージを構成するブロックを制御するコンポーネント
+/// ステージを構成するブロックを制御する
 /// </summary>
 public class Block : MonoBehaviour
 {
