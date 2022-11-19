@@ -1,6 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+[RequireComponent(typeof(Rigidbody))]
 
 public class PlayerMove : MonoBehaviour
 {
@@ -8,10 +8,11 @@ public class PlayerMove : MonoBehaviour
     GameObject _enemy;
     Rigidbody _playerRb;
     Rigidbody _enemyRb;
-    [SerializeField] float _pushpower = 5f;
-    [SerializeField] string _enemytag = "Enemy";
-    Vector3 _enemypos;
-    Vector3 _forcedir;
+    [SerializeField] float _pushPower = 5f;
+    [SerializeField] float _upperPower = 0f;
+    [SerializeField] string _enemyTag = "Enemy";
+    Vector3 _enemyPos;
+    Vector3 _forceDir;
     void Start()
     {
         _playerRb = GetComponent<Rigidbody>();
@@ -25,14 +26,14 @@ public class PlayerMove : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.tag==_enemytag)
+        if(collision.gameObject.tag==_enemyTag)
         {
             //ìGÇ∆è’ìÀÇµÇΩéûÇÃèàóù
             _enemy = collision.gameObject;
-            _enemypos = collision.gameObject.transform.position;
-            _forcedir = (_enemypos - transform.position).normalized;
+            _enemyPos = collision.gameObject.transform.position;
+            _forceDir = (_enemyPos - transform.position).normalized;
             _enemyRb = _enemy.GetComponent<Rigidbody>();
-            _enemyRb.AddForce(_forcedir.x*_pushpower, 0,_forcedir.z *_pushpower, ForceMode.Impulse);
+            _enemyRb.AddForce(_forceDir.x*_pushPower, _upperPower,_forceDir.z *_pushPower, ForceMode.Impulse);
         }
     }
     void GameOver()

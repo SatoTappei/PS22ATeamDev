@@ -1,6 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+[RequireComponent(typeof(Rigidbody))]
 
 
 public class EnemyMove : MonoBehaviour
@@ -13,11 +13,16 @@ public class EnemyMove : MonoBehaviour
     [SerializeField] float _enemysPushPower = 3f;
     [SerializeField] float _waitTimer = 3f;
     [SerializeField] float _movePower=3f;
+    [SerializeField] float _upperPower=0f;
     Vector3 _playerpos;
     Vector3 _forceDir;
     Vector3 _veloDir;
     void Start()
     {
+        if(GameObject.FindGameObjectWithTag(_playerTag))
+        {
+            _targetPlayer = GameObject.FindGameObjectWithTag(_playerTag);
+        }      
         _rb = GetComponent<Rigidbody>();
     }
     void Update()
@@ -41,7 +46,7 @@ public class EnemyMove : MonoBehaviour
             _playerpos = collision.gameObject.transform.position;
             _forceDir = (_playerpos - transform.position).normalized;
             _playersRb = collision.gameObject.GetComponent<Rigidbody>();
-            _playersRb.AddForce(_forceDir.x*_enemysPushPower, 0, _forceDir.z*_enemysPushPower, ForceMode.Impulse);
+            _playersRb.AddForce(_forceDir.x*_enemysPushPower, _upperPower, _forceDir.z*_enemysPushPower, ForceMode.Impulse);
             StartCoroutine(RestartMove());
         }
     }
