@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: -3460804549648064124}
   m_Layer: 0
   m_Name: NormalEnemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -115,7 +115,7 @@ MonoBehaviour:
   _playerTag: Player
   _enemysPushPower: 5
   _waitTimer: 3
-  _movePower: 2
+  _movePower: 4
   _upperPower: 0
 --- !u!54 &-3460804549648064124
 Rigidbody:
