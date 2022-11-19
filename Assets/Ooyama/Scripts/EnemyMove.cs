@@ -33,7 +33,7 @@ public class EnemyMove : MonoBehaviour
             _playerpos = _targetPlayer.transform.position;
             _veloDir= new Vector3(_playerpos.x - transform.position.x,
             _playerpos.y - transform.position.y, _playerpos.z - transform.position.z).normalized;
-            _rb.velocity = new Vector3(_veloDir.x*_movePower,_veloDir.y*_movePower, _veloDir.z*_movePower);
+            _rb.velocity = new Vector3(_veloDir.x*_movePower,_rb.velocity.y, _veloDir.z*_movePower);
         }
     }
     //ÉvÉåÅ[ÉÑÅ[Ç∆ÇÃìñÇΩÇËîªíË
