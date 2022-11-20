@@ -4,28 +4,29 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
-    [SerializeField, Header("Spawnerのオブジェクト")] GameObject _spwaner;
-    [SerializeField, Header("Wave数分の敵のプレハブ")] List<GameObject> _enemyPrefabs;
-    Transform _spawnPos;
+    [SerializeField, Header("Wave数分の敵のプレハブ")] List<GameObject> _spawners;
 
     private void Start()
     {
-        _spawnPos = _spwaner.transform;
+        foreach (GameObject spawner in _spawners) 
+        {
+            spawner.SetActive(false);
+        }
     }
 
     public void EnemySpawn1() 
     {
-        Instantiate(_enemyPrefabs[0], _spawnPos);
+        _spawners[0].SetActive(true);
     }
 
     public void EnemySpawn2()
     {
 
-        Instantiate(_enemyPrefabs[1], _spawnPos);
+        _spawners[1].SetActive(true);
     }
     public void EnemySpawn3()
     {
 
-        Instantiate(_enemyPrefabs[2], _spawnPos);
+        _spawners[2].SetActive(true);
     }
 }

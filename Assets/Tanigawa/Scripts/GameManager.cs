@@ -62,7 +62,7 @@ public class GameManager : MonoBehaviour
     //プレイヤーが落ちた時のオブジェクト消去とシーン遷移を行う関数
     void PlayerKill()
     {
-        if (_player.transform.position.y < _yRange && _player != null)
+        if (_player != null &&_player.transform.position.y < _yRange)
         {
             Destroy(_player);   //プレイヤーのkill
 
@@ -75,6 +75,15 @@ public class GameManager : MonoBehaviour
     //敵が落ちた時のオブジェクト消去のための関数
     void EnemyKill()
     {
-        
+        //敵の配列を取得
+        GameObject[] _enemys = GameObject.FindGameObjectsWithTag("Enemy");
+        //敵が落ちたかの判定ここに書く
+        foreach (GameObject enemy in _enemys) 
+        {
+            if (enemy.transform.position.y < _yRange) 
+            {
+                Destroy(enemy);
+            }
+        }
     }
 }

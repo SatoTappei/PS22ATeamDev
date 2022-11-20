@@ -5,7 +5,7 @@ public class UIManager : MonoBehaviour
 {
     //Wave,Enemy関連
     //WaveプロパティでWaveの値のやり取りをする
-    int _nowWave;
+    int _nowWave = 0;
     public int NowWave //Waveプロパティ
     {
         get => _nowWave;
@@ -27,8 +27,6 @@ public class UIManager : MonoBehaviour
 
     void Start()
     {
-        //Waveの初期値
-        NowWave = 1;
         //PopMenu 非表示
         _popMenu.SetActive(false);
         _onPopMenu = false;
