@@ -11,7 +11,7 @@ public class UIManager : MonoBehaviour
         get => _nowWave;
         private set => _nowWave = value;
     }
-    [SerializeField, Header("最大ウェーブ数")] int _maxWave = 0;
+    [Header("最大ウェーブ数")] public int _maxWave = 0;
     int _remainingWave = 0; //残りのWave数
     GameObject[] _enemyArray;   //敵を入れる配列
 

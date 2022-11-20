@@ -15,8 +15,11 @@ public class GameManager : MonoBehaviour
     //キャラクターを消すためのy座標の限界座標
     [SerializeField,Header("キャラクター落下判定範囲")]　float _yRange;
 
+    bool _inGame;
+
     void Start()
     {
+        _inGame = true;
         _player = GameObject.FindWithTag("Player");
         _uIManager = GameObject.Find("MainUI").GetComponent<UIManager>();
         _fadeManager = GetComponent<FadeManager>();
@@ -25,17 +28,24 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        //UI操作　それぞれの数値をUIに更新していく
-        _uIManager.OutputNowWave();//現在のWave出力
-        _uIManager.OutputRemainingWave();//残りのWave出力
-        _uIManager.OutputEnemyCount();//敵の数出力
+        if (_inGame) 
+        {
+            //UI操作　それぞれの数値をUIに更新していく
+            _uIManager.OutputNowWave();//現在のWave出力
+            _uIManager.OutputRemainingWave();//残りのWave出力
+            _uIManager.OutputEnemyCount();//敵の数出力
 
-        //キャラクターの処理
-        PlayerKill();//playerが死んだときの処理
-        EnemyKill();//敵が死んだときの処理
+            //キャラクターの処理
+            PlayerKill();//playerが死んだときの処理
+            EnemyKill();//敵が死んだときの処理
 
-        //Wave部関連
-        WaveChange();//
+            //Wave部関連
+            WaveChange();//
+
+            //クリアしたときの処理
+            GameClear();
+        }
+        
     }
 
     //敵の生成を管理する関数
@@ -66,8 +76,8 @@ public class GameManager : MonoBehaviour
         {
             Destroy(_player);   //プレイヤーのkill
 
-            //ゲームオーバーの処理を描く
-
+            //ゲームオーバーの時の処理
+            GameOver();
 
         }
     }
@@ -85,5 +95,28 @@ public class GameManager : MonoBehaviour
                 Destroy(enemy);
             }
         }
+    }
+
+    //GameClearの時の処理を描く
+    void GameClear() 
+    {
+        if (_uIManager.NowWave == _uIManager._maxWave && _uIManager.EnemyCount() == 0) 
+        {
+            //ゲームを止める
+            _inGame = false;
+            //ゲームクリアの時の処理をここに書く
+
+
+        }
+    }
+
+    //GameOver の時の処理を描く
+    void GameOver() 
+    {
+        //ゲームを止める
+        _inGame = false;
+        //ゲームオーバーの時の処理をここに書く
+
+
     }
 }
