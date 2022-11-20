@@ -128,5 +128,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _pushPower: 10
-  _upperPower: 0
+  _upperPower: 3
+  _pushPowerUp: 2
   _enemyTag: Enemy
+  _itemTag: Item
+  _particle: {fileID: 3449359250790683093, guid: cff5feb0305d02643b0f8d08f80faed0, type: 3}

@@ -6,9 +6,11 @@ using UnityEngine;
 public class EnemyMove : MonoBehaviour
 {
     bool _canmove=true;
+    float _halfScale;
     Rigidbody _rb;
     Rigidbody _playersRb;
     [SerializeField]GameObject _targetPlayer;
+    [SerializeField] GameObject _particle;
     [SerializeField] string _playerTag = "Player";
     [SerializeField] float _enemysPushPower = 3f;
     [SerializeField] float _waitTimer = 3f;
@@ -24,6 +26,7 @@ public class EnemyMove : MonoBehaviour
             _targetPlayer = GameObject.FindGameObjectWithTag(_playerTag);
         }      
         _rb = GetComponent<Rigidbody>();
+        _halfScale = transform.localScale.x / 2;
     }
     void Update()
     {
@@ -45,6 +48,11 @@ public class EnemyMove : MonoBehaviour
             _canmove = false;
             _playerpos = collision.gameObject.transform.position;
             _forceDir = (_playerpos - transform.position).normalized;
+            Instantiate(_particle,  new Vector3
+                ((transform.position.x + _forceDir.x * _halfScale)
+                ,(transform.position.y+_forceDir.y * _halfScale)
+                ,(transform.position.z+_forceDir.z * _halfScale))
+                , Quaternion.identity);
             _playersRb = collision.gameObject.GetComponent<Rigidbody>();
             _playersRb.AddForce(_forceDir.x*_enemysPushPower, _upperPower, _forceDir.z*_enemysPushPower, ForceMode.Impulse);
             StartCoroutine(RestartMove());
