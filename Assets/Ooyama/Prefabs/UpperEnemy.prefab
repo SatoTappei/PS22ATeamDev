@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 4653950744116102638}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -3.01, y: 20, z: 3.28}
-  m_LocalScale: {x: 3, y: 3, z: 3}
+  m_LocalScale: {x: 5, y: 5, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -128,6 +128,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _targetPlayer: {fileID: 0}
+  _particle: {fileID: 8478886497773511042, guid: 8aeebf1b6424bdc45b9fd390ef531896, type: 3}
   _playerTag: Player
   _enemysPushPower: 0
   _waitTimer: 3
