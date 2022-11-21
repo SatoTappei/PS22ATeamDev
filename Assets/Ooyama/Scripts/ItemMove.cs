@@ -14,6 +14,7 @@ public class ItemMove : MonoBehaviour
     {
         if(collision.gameObject.tag==_playeTag)
         {
+            SoundManager._instance.Play("SE_ƒAƒCƒeƒ€Šl“¾");
             Destroy(this.gameObject);
         }
     }

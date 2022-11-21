@@ -34,6 +34,7 @@ public class PlayerMove : MonoBehaviour
         if(collision.gameObject.tag==_enemyTag)
         {
             //“G‚ÆÕ“Ë‚µ‚½‚Ìˆ—
+            SoundManager._instance.Play("SE_Õ“Ë");
             _enemy = collision.gameObject;
             _enemyPos = collision.gameObject.transform.position;
             _forceDir = (_enemyPos - transform.position).normalized;
