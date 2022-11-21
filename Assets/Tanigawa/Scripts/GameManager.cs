@@ -24,6 +24,10 @@ public class GameManager : MonoBehaviour
      bool _gameClear;
      bool _gameOver;
 
+    //シーンの名前変更のための変数
+    [SerializeField,Header("タイトルシーンの名前")] string _titleSceneName = "Title";
+    [SerializeField, Header("ゲームシーンの名前")] string _inGameSceneName = "InGame";
+
     void Awake()
     {
         //シーン間でオブジェクト共有のための処理
@@ -153,7 +157,7 @@ public class GameManager : MonoBehaviour
             ////シーンのロード
             if (Input.GetKeyDown(KeyCode.Space) && _gameClear) //Spaceキーを押したら
             {
-                SceneManager.LoadScene("Title1");
+                SceneManager.LoadScene(_titleSceneName);
                 
 
             }
@@ -178,7 +182,7 @@ public class GameManager : MonoBehaviour
         //シーンのロード
         if (Input.GetKeyDown(KeyCode.Space) && _gameOver) //Spaceキーを押したら
         {
-            SceneManager.LoadScene("Title1");
+            SceneManager.LoadScene(_titleSceneName);
             
 
 
@@ -193,7 +197,7 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && !_inGame && !_gameClear && !_gameOver) //Spaceキーを押したら
         {
             //シーンのロード
-            SceneManager.LoadScene("InGame1");
+            SceneManager.LoadScene(_inGameSceneName);
             //fade
             //_fadeManager.StartFadeIn();
             //InGameシーンで使う処理を有効化する
