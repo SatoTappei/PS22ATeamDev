@@ -9,11 +9,10 @@ public class PlayerMove : MonoBehaviour
     Rigidbody _playerRb;
     Rigidbody _enemyRb;
     float _halfScale;
-    [SerializeField] float _pushPower = 5f;
+    [SerializeField] public float _pushPower = 5f;
     [SerializeField] float _upperPower = 0f;
-    [SerializeField] float _pushPowerUp = 2f;
+    [SerializeField] public float _pushPowerUp = 2f;
     [SerializeField] string _enemyTag = "Enemy";
-    [SerializeField] string _itemTag = "Item";
     [SerializeField] GameObject _particle;
     Vector3 _enemyPos;
     Vector3 _forceDir;
@@ -45,13 +44,6 @@ public class PlayerMove : MonoBehaviour
                 , Quaternion.identity);
             _enemyRb = _enemy.GetComponent<Rigidbody>();
             _enemyRb.AddForce(_forceDir.x*_pushPower, _upperPower,_forceDir.z *_pushPower, ForceMode.Impulse);
-        }
-    }
-    private void OnTriggerEnter(Collider other)
-    {
-        if(other.gameObject.tag==_itemTag)
-        {
-            _pushPower += _pushPowerUp;
         }
     }
     

@@ -14,6 +14,8 @@ public class ItemMove : MonoBehaviour
     {
         if(collision.gameObject.tag==_playeTag)
         {
+            PlayerMove _pm = collision.gameObject.GetComponent<PlayerMove>();
+            _pm._pushPower += _pm._pushPowerUp;
             SoundManager._instance.Play("SE_ƒAƒCƒeƒ€Šl“¾");
             Destroy(this.gameObject);
         }
