@@ -10,16 +10,19 @@ public class GameManager : MonoBehaviour
     //参照
     UIManager _uIManager;
     FadeManager _fadeManager;
-    SpawnManager _spawnManager;
+    //SpawnManager _spawnManager;
 
     //プレイヤーのオブジェクト
     GameObject _player;
-    //敵の配列
-    GameObject[] _enemys;
+    GameObject[] _enemys;//敵の配列
+    [SerializeField, Header("Wave数分の敵の組み合わせのプレハブ")] List<GameObject> _spawners;
+    [SerializeField] Transform _spawnPos;   //敵の沸く位置
     //キャラクターを消すためのy座標の限界座標
     [SerializeField,Header("キャラクター落下判定範囲")]　float _yRange;
-
-    bool _inGame;
+    //inGameフラグ
+    [SerializeField, Header("インゲームフラグ")] bool _inGame;
+     bool _gameClear;
+     bool _gameOver;
 
     void Awake()
     {
@@ -37,19 +40,19 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        GameStart();
         if (_inGame) 
         {
             _player = GameObject.FindWithTag("Player");
             _uIManager = GameObject.Find("MainUI").GetComponent<UIManager>();
             _fadeManager = GetComponent<FadeManager>();
-            _spawnManager = GetComponent<SpawnManager>();
+            //_spawnManager = GetComponent<SpawnManager>();
         }
-        
     }
 
     void Update()
     {
+        GameStart();
+
         if (_inGame) 
         {
             //UI操作　それぞれの数値をUIに更新していく
@@ -77,24 +80,33 @@ public class GameManager : MonoBehaviour
         if (_uIManager.NowWave == 1)//Wave1のとき 
         {
             //Wave1の敵を生成する処理を描く
-            _spawnManager.EnemySpawn1();
+            //_spawnManager.EnemySpawn1();
+            EnemySpawn(_spawners[0]);
             //敵の配列を取得
             _enemys = GameObject.FindGameObjectsWithTag("Enemy");
         }
         if (_uIManager.NowWave == 2)//Wave2のとき 
         {
             //Wave2の敵を生成する処理を描く
-            _spawnManager.EnemySpawn2();
+            //_spawnManager.EnemySpawn2();
+            EnemySpawn(_spawners[1]);
             //敵の配列を取得
             _enemys = GameObject.FindGameObjectsWithTag("Enemy");
         }
         if (_uIManager.NowWave == 3)//Wave3のとき 
         {
             //Wave3の敵を生成する処理を描く
-            _spawnManager.EnemySpawn3();
+            //_spawnManager.EnemySpawn3();
+            EnemySpawn(_spawners[2]);
             //敵の配列を取得
             _enemys = GameObject.FindGameObjectsWithTag("Enemy");
         }
+    }
+
+    //
+    void EnemySpawn(GameObject spawn)
+    {
+        Instantiate(spawn, _spawnPos);
     }
 
     //プレイヤーが落ちた時のオブジェクト消去とシーン遷移を行う関数
@@ -130,9 +142,22 @@ public class GameManager : MonoBehaviour
         {
             //ゲームを止める
             _inGame = false;
-            //ゲームクリアの時の処理をここに書く
-            _fadeManager.StartFadeOut("");
-  
+            //クリアフラグ
+            _gameClear = true;
+            //ゲームクリアの時の処理
+            //_fadeManager.StartFadeOut("");  //fadeする
+            //クリア時のロゴ？を出す処理をここに書く
+
+
+
+            ////シーンのロード
+            if (Input.GetKeyDown(KeyCode.Space) && _gameClear) //Spaceキーを押したら
+            {
+                SceneManager.LoadScene("Title1");
+                
+
+            }
+
 
         }
     }
@@ -142,8 +167,22 @@ public class GameManager : MonoBehaviour
     {
         //ゲームを止める
         _inGame = false;
-        //ゲームオーバーの時の処理をここに書く
-        _fadeManager.StartFadeOut("");
+        //ゲームオーバーフラグ
+        _gameOver = true;
+        //ゲームオーバーの時の処理
+        //_fadeManager.StartFadeOut("");  //fadeする
+        //クリア時のロゴ？を出す処理をここに書く
+
+
+
+        //シーンのロード
+        if (Input.GetKeyDown(KeyCode.Space) && _gameOver) //Spaceキーを押したら
+        {
+            SceneManager.LoadScene("Title1");
+            
+
+
+        }
 
 
     }
@@ -151,12 +190,12 @@ public class GameManager : MonoBehaviour
     //titleからゲームをスタートする
     void GameStart() 
     {
-        if (Input.GetKeyDown(KeyCode.Space)) //Spaceキーを押したら
+        if (Input.GetKeyDown(KeyCode.Space) && !_inGame && !_gameClear && !_gameOver) //Spaceキーを押したら
         {
             //シーンのロード
-            SceneManager.LoadScene("InGame");
-            //fade in呼び出し
-            _fadeManager.StartFadeIn();
+            SceneManager.LoadScene("InGame1");
+            //fade
+            //_fadeManager.StartFadeIn();
             //InGameシーンで使う処理を有効化する
             _inGame = true;
         }
