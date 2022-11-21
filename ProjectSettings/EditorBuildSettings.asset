@@ -4,5 +4,11 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Merge/Title.unity
+    guid: 6e40ed8bf8125444aabaeb2a2721ee9e
+  - enabled: 1
+    path: Assets/Merge/InGame.unity
+    guid: 84966dc607e7e4d49b85265b9e1dce44
   m_configObjects: {}
