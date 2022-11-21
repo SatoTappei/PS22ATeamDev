@@ -12,8 +12,8 @@ public class HitChecker : MonoBehaviour
     readonly float RayDistance = 100.0f;
 
     [SerializeField] Transform _checker;
-    
-    //LayerMask _mask;
+    [SerializeField] LayerMask _mask;
+
     float _prevY = 0;
 
     void Start()
@@ -38,16 +38,23 @@ public class HitChecker : MonoBehaviour
             Vector3 pos = transform.position;
             Ray underRay = new Ray(pos + RayOffset, Vector3.down);
 
-            if (Physics.SphereCast(underRay, RayRadius, out RaycastHit hit, RayDistance/*, _mask*/))
+            // フィールド内に居れば下向きのRayを飛ばしてブロックの上にいるか判定する
+            if (Physics.SphereCast(underRay, RayRadius, out RaycastHit hit, RayDistance, _mask))
             {
+                // Rayがヒットしていればその位置を保持する
                 pos.y = hit.point.y;
-                _prevY = hit.point.y;
+                _prevY = pos.y;
             }
             else
             {
+                // 当たらなかったらY座標を前回当たった位置に戻す
                 pos.y = _prevY;
                 transform.position = pos;
             }
+        }
+        else
+        {
+            enabled = false;
         }
     }
 }
