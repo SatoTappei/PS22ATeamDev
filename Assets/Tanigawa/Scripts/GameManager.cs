@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    //シングルトン用
+    static GameManager _instance;
     //参照
     UIManager _uIManager;
     FadeManager _fadeManager;
@@ -12,18 +14,38 @@ public class GameManager : MonoBehaviour
 
     //プレイヤーのオブジェクト
     GameObject _player;
+    //敵の配列
+    GameObject[] _enemys;
     //キャラクターを消すためのy座標の限界座標
     [SerializeField,Header("キャラクター落下判定範囲")]　float _yRange;
 
     bool _inGame;
 
+    void Awake()
+    {
+        //シーン間でオブジェクト共有のための処理
+        if ( _instance == null)//インスタンスがなかったら
+        {
+            _instance = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
+        else //あったら消す
+        {
+            Destroy(this.gameObject);
+        }
+    }
+
     void Start()
     {
-        _inGame = true;
-        _player = GameObject.FindWithTag("Player");
-        _uIManager = GameObject.Find("MainUI").GetComponent<UIManager>();
-        _fadeManager = GetComponent<FadeManager>();
-        _spawnManager = GetComponent<SpawnManager>();
+        GameStart();
+        if (_inGame) 
+        {
+            _player = GameObject.FindWithTag("Player");
+            _uIManager = GameObject.Find("MainUI").GetComponent<UIManager>();
+            _fadeManager = GetComponent<FadeManager>();
+            _spawnManager = GetComponent<SpawnManager>();
+        }
+        
     }
 
     void Update()
@@ -56,16 +78,22 @@ public class GameManager : MonoBehaviour
         {
             //Wave1の敵を生成する処理を描く
             _spawnManager.EnemySpawn1();
+            //敵の配列を取得
+            _enemys = GameObject.FindGameObjectsWithTag("Enemy");
         }
         if (_uIManager.NowWave == 2)//Wave2のとき 
         {
             //Wave2の敵を生成する処理を描く
             _spawnManager.EnemySpawn2();
+            //敵の配列を取得
+            _enemys = GameObject.FindGameObjectsWithTag("Enemy");
         }
         if (_uIManager.NowWave == 3)//Wave3のとき 
         {
             //Wave3の敵を生成する処理を描く
             _spawnManager.EnemySpawn3();
+            //敵の配列を取得
+            _enemys = GameObject.FindGameObjectsWithTag("Enemy");
         }
     }
 
@@ -85,8 +113,6 @@ public class GameManager : MonoBehaviour
     //敵が落ちた時のオブジェクト消去のための関数
     void EnemyKill()
     {
-        //敵の配列を取得
-        GameObject[] _enemys = GameObject.FindGameObjectsWithTag("Enemy");
         //敵が落ちたかの判定ここに書く
         foreach (GameObject enemy in _enemys) 
         {
@@ -105,7 +131,8 @@ public class GameManager : MonoBehaviour
             //ゲームを止める
             _inGame = false;
             //ゲームクリアの時の処理をここに書く
-
+            _fadeManager.StartFadeOut("");
+  
 
         }
     }
@@ -116,7 +143,22 @@ public class GameManager : MonoBehaviour
         //ゲームを止める
         _inGame = false;
         //ゲームオーバーの時の処理をここに書く
+        _fadeManager.StartFadeOut("");
 
 
+    }
+
+    //titleからゲームをスタートする
+    void GameStart() 
+    {
+        if (Input.GetKeyDown(KeyCode.Space)) //Spaceキーを押したら
+        {
+            //シーンのロード
+            SceneManager.LoadScene("InGame");
+            //fade in呼び出し
+            _fadeManager.StartFadeIn();
+            //InGameシーンで使う処理を有効化する
+            _inGame = true;
+        }
     }
 }
