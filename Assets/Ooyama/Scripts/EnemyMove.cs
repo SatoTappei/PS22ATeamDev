@@ -38,6 +38,10 @@ public class EnemyMove : MonoBehaviour
             _playerpos.y - transform.position.y, _playerpos.z - transform.position.z).normalized;
             _rb.velocity = new Vector3(_veloDir.x*_movePower,_rb.velocity.y, _veloDir.z*_movePower);
         }
+        if(transform.position.y<-15)
+        {
+            Destroy(this.gameObject);
+        }
     }
     //ƒvƒŒ[ƒ„[‚Æ‚Ì“–‚½‚è”»’è
     private void OnCollisionEnter(Collision collision)
