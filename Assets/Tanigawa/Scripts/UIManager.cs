@@ -5,7 +5,7 @@ public class UIManager : MonoBehaviour
 {
     //Wave,Enemy関連
     //WaveプロパティでWaveの値のやり取りをする
-    int _nowWave = 0;
+    int _nowWave = 1;
     public int NowWave //Waveプロパティ
     {
         get => _nowWave;
@@ -39,6 +39,12 @@ public class UIManager : MonoBehaviour
         //Popするメニュー
         OnPopMenu();
         OnPopTips();
+        /*
+        //UI操作　それぞれの数値をUIに更新していく
+        OutputNowWave();//現在のWave出力
+        OutputRemainingWave();//残りのWave出力
+        OutputEnemyCount();//敵の数出力
+        */
     }
 
     //現在のウェーブを出力する関数

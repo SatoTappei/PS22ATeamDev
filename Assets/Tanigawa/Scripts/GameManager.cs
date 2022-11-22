@@ -7,22 +7,35 @@ public class GameManager : MonoBehaviour
 {
     //シングルトン用
     static GameManager _instance;
-    //参照
-    UIManager _uIManager;
-    FadeManager _fadeManager;
-    //SpawnManager _spawnManager;
 
-    //プレイヤーのオブジェクト
-    GameObject _player;
-    GameObject[] _enemys;//敵の配列
-    [SerializeField, Header("Wave数分の敵の組み合わせのプレハブ")] List<GameObject> _spawners;
-    [SerializeField] Transform _spawnPos;   //敵の沸く位置
+    //参照
+    FadeManager _fadeManager;
+    UIManager _uIManager;
+
+    //キャラクターのオブジェクト
+    GameObject _player; //プレイヤー
+    GameObject[] _enemys;   //敵の配列
+
+    //沸かす敵関連
+    [SerializeField, Header("Wave数分の敵の組み合わせのプレハブ")] 
+    List<GameObject> _spawners;
+    [SerializeField] 
+    Transform _spawnPos;   //敵の沸く位置
+
     //キャラクターを消すためのy座標の限界座標
-    [SerializeField,Header("キャラクター落下判定範囲")]　float _yRange;
-    //inGameフラグ
-    [SerializeField, Header("インゲームフラグ")] bool _inGame;
-     bool _gameClear;
-     bool _gameOver;
+    [SerializeField,Header("キャラクター落下判定範囲")]
+    float _yRange;
+
+    //フラグ関連
+    bool _wave1;
+    bool _wave2;
+    bool _wave3;
+    [SerializeField, Header("ゲームが開始されたフラグ")]
+    bool _startGame;　//ゲームの開始を判定するフラグ
+    [SerializeField, Header("インゲームフラグ")] 
+    bool _inGame;　//inGameフラグ
+    bool _gameClear;//ゲームのクリアを判定するフラグ
+    bool _gameOver;//ゲームの終了を判定するフラグ
 
     //シーンの名前変更のための変数
     [SerializeField,Header("タイトルシーンの名前")] string _titleSceneName = "Title";
@@ -44,73 +57,83 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        if (_inGame) 
-        {
-            _player = GameObject.FindWithTag("Player");
-            _uIManager = GameObject.Find("MainUI").GetComponent<UIManager>();
-            _fadeManager = GetComponent<FadeManager>();
-            //_spawnManager = GetComponent<SpawnManager>();
-        }
+
     }
 
     void Update()
     {
+        //TitleシーンからInGameシーンへ遷移する関数を呼び出している。
         GameStart();
 
-        if (_inGame) 
+        //TitleシーンからInGameシーンへ遷移したときに１度だけ呼び出される
+        OnlyOnceMethod();
+
+        //InGameにいる間実行される
+        if (_inGame)
         {
+            //キャラクターの処理
+            PlayerKill();//playerが死んだときの処理
+            //EnemyKill();
+            
+            //Wave関連
+            WaveChange();
+
+            //クリアしたときの処理
+            GameClear();
+
             //UI操作　それぞれの数値をUIに更新していく
             _uIManager.OutputNowWave();//現在のWave出力
             _uIManager.OutputRemainingWave();//残りのWave出力
             _uIManager.OutputEnemyCount();//敵の数出力
-
-            //キャラクターの処理
-            PlayerKill();//playerが死んだときの処理
-            EnemyKill();//敵が死んだときの処理
-
-            //Wave部関連
-            WaveChange();//
-
-            //クリアしたときの処理
-            GameClear();
         }
-        
+
+    }
+
+    //update内で１回だけ処理したい関数
+    void OnlyOnceMethod()
+    {
+        if (_startGame && _inGame)
+        {
+            _player = GameObject.FindWithTag("Player");　//プレイヤー取得
+            _uIManager = GameObject.Find("MainUI").GetComponent<UIManager>();
+            _fadeManager = GetComponent<FadeManager>();　//FadeManager取得
+            _startGame = false;
+        }
     }
 
     //敵の生成を管理する関数
     void WaveChange()
     {
         //Waveごとに違う処理をする
-        if (_uIManager.NowWave == 1)//Wave1のとき 
+        if (_uIManager.NowWave == 1 && !_wave1) //Wave1のとき 
         {
             //Wave1の敵を生成する処理を描く
-            //_spawnManager.EnemySpawn1();
             EnemySpawn(_spawners[0]);
-            //敵の配列を取得
-            _enemys = GameObject.FindGameObjectsWithTag("Enemy");
+            _wave1 = true;
         }
-        if (_uIManager.NowWave == 2)//Wave2のとき 
+        if (_uIManager.NowWave == 2 && !_wave2)//Wave2のとき 
         {
             //Wave2の敵を生成する処理を描く
-            //_spawnManager.EnemySpawn2();
             EnemySpawn(_spawners[1]);
-            //敵の配列を取得
-            _enemys = GameObject.FindGameObjectsWithTag("Enemy");
+            _wave2 = true;
         }
-        if (_uIManager.NowWave == 3)//Wave3のとき 
+        if (_uIManager.NowWave == 3 && !_wave3)//Wave3のとき 
         {
             //Wave3の敵を生成する処理を描く
-            //_spawnManager.EnemySpawn3();
             EnemySpawn(_spawners[2]);
-            //敵の配列を取得
-            _enemys = GameObject.FindGameObjectsWithTag("Enemy");
+            _wave3 = true;
         }
     }
 
-    //
+    //指定した敵の組み合わせを生成する処理
     void EnemySpawn(GameObject spawn)
     {
+        //敵生成
         Instantiate(spawn, _spawnPos);
+        /*
+        //敵の配列を取得
+        _enemys = GameObject.FindGameObjectsWithTag("Enemy");
+        */
     }
 
     //プレイヤーが落ちた時のオブジェクト消去とシーン遷移を行う関数
@@ -125,20 +148,23 @@ public class GameManager : MonoBehaviour
 
         }
     }
-
+    /*
     //敵が落ちた時のオブジェクト消去のための関数
     void EnemyKill()
     {
         //敵が落ちたかの判定ここに書く
-        foreach (GameObject enemy in _enemys) 
+        if (_enemys != null) 
         {
-            if (enemy.transform.position.y < _yRange) 
+            foreach (GameObject enemy in _enemys)
             {
-                Destroy(enemy);
+                if (enemy.transform.position.y < _yRange)
+                {
+                    Destroy(enemy);
+                }
             }
         }
     }
-
+    */
     //GameClearの時の処理を描く
     void GameClear() 
     {
@@ -183,25 +209,21 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && _gameOver) //Spaceキーを押したら
         {
             SceneManager.LoadScene(_titleSceneName);
-            
-
-
         }
-
-
     }
 
-    //titleからゲームをスタートする
+    //titleシーンからfadeしながらInGameシーンへ遷移する処理
     void GameStart() 
     {
-        if (Input.GetKeyDown(KeyCode.Space) && !_inGame && !_gameClear && !_gameOver) //Spaceキーを押したら
+        if (Input.GetKeyDown(KeyCode.Space) && !_inGame && !_startGame && !_gameClear && !_gameOver) //Spaceキーを押したら
         {
             //シーンのロード
             SceneManager.LoadScene(_inGameSceneName);
             //fade
             //_fadeManager.StartFadeIn();
             //InGameシーンで使う処理を有効化する
-            _inGame = true;
+            _inGame = true;　//インゲームフラグを有効化
+            _startGame = true;　//ゲームがスタートしたフラグを有効化
         }
     }
 }
