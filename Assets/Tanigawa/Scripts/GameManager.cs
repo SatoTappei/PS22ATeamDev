@@ -14,13 +14,10 @@ public class GameManager : MonoBehaviour
 
     //キャラクターのオブジェクト
     GameObject _player; //プレイヤー
-    GameObject[] _enemys;   //敵の配列
-
+    
     //沸かす敵関連
     [SerializeField, Header("Wave数分の敵の組み合わせのプレハブ")] 
     List<GameObject> _spawners;
-    [SerializeField] 
-    Transform _spawnPos;   //敵の沸く位置
 
     //キャラクターを消すためのy座標の限界座標
     [SerializeField,Header("キャラクター落下判定範囲")]
@@ -94,6 +91,7 @@ public class GameManager : MonoBehaviour
     {
         if (_startGame && _inGame)
         {
+            Debug.Log("OnlyOnceMethodが実行された");
             _player = GameObject.FindWithTag("Player");　//プレイヤー取得
             _uIManager = GameObject.Find("MainUI").GetComponent<UIManager>();
             _fadeManager = GetComponent<FadeManager>();　//FadeManager取得
@@ -129,11 +127,7 @@ public class GameManager : MonoBehaviour
     void EnemySpawn(GameObject spawn)
     {
         //敵生成
-        Instantiate(spawn, _spawnPos);
-        /*
-        //敵の配列を取得
-        _enemys = GameObject.FindGameObjectsWithTag("Enemy");
-        */
+        Instantiate(spawn);
     }
 
     //プレイヤーが落ちた時のオブジェクト消去とシーン遷移を行う関数
@@ -148,23 +142,7 @@ public class GameManager : MonoBehaviour
 
         }
     }
-    /*
-    //敵が落ちた時のオブジェクト消去のための関数
-    void EnemyKill()
-    {
-        //敵が落ちたかの判定ここに書く
-        if (_enemys != null) 
-        {
-            foreach (GameObject enemy in _enemys)
-            {
-                if (enemy.transform.position.y < _yRange)
-                {
-                    Destroy(enemy);
-                }
-            }
-        }
-    }
-    */
+    
     //GameClearの時の処理を描く
     void GameClear() 
     {
