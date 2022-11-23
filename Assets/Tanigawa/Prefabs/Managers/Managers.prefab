@@ -49,6 +49,8 @@ MonoBehaviour:
   - {fileID: 5298713030854315929, guid: 520424e75391e6943975b8138b27aa9f, type: 3}
   - {fileID: 7732804301567032610, guid: 8fd17caa5e7ec794a8b90783373f201a, type: 3}
   _yRange: -15
-  _debugMode: 0
+  _debugMode: 1
   _titleSceneName: Title
   _inGameSceneName: InGame
+  _gameClearCanvas: {fileID: 6218571260205703607, guid: 48a2289f3137cd042a449ab7e38d7417, type: 3}
+  _gameOverCanvas: {fileID: 3934306722681046787, guid: 391f1dd656e92e540911564c73361843, type: 3}

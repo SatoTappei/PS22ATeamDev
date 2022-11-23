@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+
 
 public class GameManager : MonoBehaviour
 {
@@ -28,14 +30,20 @@ public class GameManager : MonoBehaviour
     bool _wave2;    //Wave2のフラグ
     bool _wave3;    //Wave3のフラグ 
     bool _inGame;　      //inGameフラグ
+    /*
     bool _gameClear;    //ゲームのクリアを判定するフラグ
     bool _gameOver;     //ゲームの終了を判定するフラグ
+    */
     [SerializeField, Tooltip("InGameシーンでテストしたい場合はチェックをつけてください。"),Header("デバッグ用フラグ")]
     bool _debugMode;
 
     //シーンの名前変更のための変数
     [SerializeField,Header("タイトルシーンの名前")] string _titleSceneName = "Title";
     [SerializeField, Header("ゲームシーンの名前")] string _inGameSceneName = "InGame";
+
+    //GameOverとGameClearのシーンのボタンのオブジェクト
+    [SerializeField, Header("GameClearのキャンバスのプレハブ")] GameObject _gameClearCanvas;
+    [SerializeField, Header("GameOverのキャンバスのプレハブ")] GameObject _gameOverCanvas;
 
     void Awake()
     {
@@ -155,21 +163,12 @@ public class GameManager : MonoBehaviour
         {
             //ゲームを止める
             _inGame = false;
+            /*
             //クリアフラグ
             _gameClear = true;
+            */
             //ゲームクリアの時の処理
-            //クリア時のロゴ？を出す処理をここに書く
-
-
-
-            ////シーンのロード
-            if (Input.GetKeyDown(KeyCode.Space) && _gameClear) //Spaceキーを押したら
-            {
-                //フェードアウトしてタイトルシーンをロード
-                _fadeManager.StartFadeOut(_titleSceneName);  
-            }
-
-
+            Instantiate(_gameClearCanvas);
         }
     }
 
@@ -178,25 +177,18 @@ public class GameManager : MonoBehaviour
     {
         //ゲームを止める
         _inGame = false;
+        /*
         //ゲームオーバーフラグ
         _gameOver = true;
+        */
         //ゲームオーバーの時の処理
-        //クリア時のロゴ？を出す処理をここに書く
-
-
-
-        //シーンのロード
-        if (Input.GetKeyDown(KeyCode.Space) && _gameOver) //Spaceキーを押したら
-        {
-            //フェードアウトしてタイトルシーンをロード
-            _fadeManager.StartFadeOut(_titleSceneName);
-        }
+        Instantiate(_gameOverCanvas);
     }
 
     //titleシーンからfadeしながらInGameシーンへ遷移する処理
     void GameStart() 
     {
-        if (Input.GetKeyDown(KeyCode.Space) && !_inGame && !_gameClear && !_gameOver) //Spaceキーを押したら
+        if (Input.GetKeyDown(KeyCode.Space) && !_inGame) //Spaceキーを押したら
         {
             //シーンのロード
             SceneManager.LoadScene(_inGameSceneName);
