@@ -246,6 +246,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: WeakEnemy
       objectReference: {fileID: 0}
+    - target: {fileID: 2505185986212673520, guid: 2ae792025a59d0440b946a3f69da53b2, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2505185986212673530, guid: 2ae792025a59d0440b946a3f69da53b2, type: 3}
       propertyPath: m_RootOrder
       value: 10
@@ -765,7 +769,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6524516345225637027, guid: 02b64173b68aa1b499063d77d6bcd0b5, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 02b64173b68aa1b499063d77d6bcd0b5, type: 3}
