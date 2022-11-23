@@ -9,8 +9,8 @@ public class GameManager : MonoBehaviour
     static GameManager _instance;
 
     //参照
-    FadeManager _fadeManager;
     UIManager _uIManager;
+    FadeManager _fadeManager;
 
     //キャラクターのオブジェクト
     GameObject _player; //プレイヤー
@@ -24,15 +24,14 @@ public class GameManager : MonoBehaviour
     float _yRange;
 
     //フラグ関連
-    bool _wave1;
-    bool _wave2;
-    bool _wave3;
-    [SerializeField, Header("ゲームが開始されたフラグ")]
-    bool _startGame;　//ゲームの開始を判定するフラグ
-    [SerializeField, Header("インゲームフラグ")] 
-    bool _inGame;　//inGameフラグ
-    bool _gameClear;//ゲームのクリアを判定するフラグ
-    bool _gameOver;//ゲームの終了を判定するフラグ
+    bool _wave1;    //Wave1のフラグ
+    bool _wave2;    //Wave2のフラグ
+    bool _wave3;    //Wave3のフラグ 
+    bool _inGame;　      //inGameフラグ
+    bool _gameClear;    //ゲームのクリアを判定するフラグ
+    bool _gameOver;     //ゲームの終了を判定するフラグ
+    [SerializeField, Tooltip("InGameシーンでテストしたい場合はチェックをつけてください。"),Header("デバッグ用フラグ")]
+    bool _debugMode;
 
     //シーンの名前変更のための変数
     [SerializeField,Header("タイトルシーンの名前")] string _titleSceneName = "Title";
@@ -54,7 +53,8 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-
+        //イベントにメッソド追加
+        SceneManager.sceneLoaded += OnlyOnceMethod;
     }
 
     void Update()
@@ -62,15 +62,11 @@ public class GameManager : MonoBehaviour
         //TitleシーンからInGameシーンへ遷移する関数を呼び出している。
         GameStart();
 
-        //TitleシーンからInGameシーンへ遷移したときに１度だけ呼び出される
-        OnlyOnceMethod();
-
         //InGameにいる間実行される
         if (_inGame)
         {
             //キャラクターの処理
             PlayerKill();//playerが死んだときの処理
-            //EnemyKill();
             
             //Wave関連
             WaveChange();
@@ -83,20 +79,29 @@ public class GameManager : MonoBehaviour
             _uIManager.OutputRemainingWave();//残りのWave出力
             _uIManager.OutputEnemyCount();//敵の数出力
         }
-
-    }
-
-    //update内で１回だけ処理したい関数
-    void OnlyOnceMethod()
-    {
-        if (_startGame && _inGame)
+        
+        //InGameシーンからテストしたい時のフラグがOnになった時に行われる処理　（ゲームには関係ない処理）
+        if (_debugMode) 
         {
             Debug.Log("OnlyOnceMethodが実行された");
-            _player = GameObject.FindWithTag("Player");　//プレイヤー取得
-            _uIManager = GameObject.Find("MainUI").GetComponent<UIManager>();
-            _fadeManager = GetComponent<FadeManager>();　//FadeManager取得
-            _startGame = false;
+            _player = GameObject.FindWithTag("Player");                             //プレイヤー取得
+            _uIManager = GameObject.Find("MainUI").GetComponent<UIManager>();       //UIManager取得
+            _fadeManager = GameObject.Find("MainUI").GetComponent<FadeManager>();  //FadeManager取得
+            _fadeManager.StartFadeIn();//fadeinする
+            _inGame = true; //インゲームフラグを有効化
         }
+        
+    }
+
+    //TitleシーンからInGameシーンへ遷移したときに１度だけ呼び出される関数
+    void OnlyOnceMethod(Scene nextScene, LoadSceneMode mode)
+    {
+        Debug.Log("OnlyOnceMethodが実行された");
+        _player = GameObject.FindWithTag("Player");                             //プレイヤー取得
+        _uIManager = GameObject.Find("MainUI").GetComponent<UIManager>();       //UIManager取得
+        _fadeManager = GameObject.Find("MainUI").GetComponent<FadeManager>();  //FadeManager取得
+        _fadeManager.StartFadeIn();//fadeinする
+        _inGame = true; //インゲームフラグを有効化
     }
 
     //敵の生成を管理する関数
@@ -135,11 +140,10 @@ public class GameManager : MonoBehaviour
     {
         if (_player != null &&_player.transform.position.y < _yRange)
         {
-            Destroy(_player);   //プレイヤーのkill
-
+            //プレイヤーのkill
+            Destroy(_player);
             //ゲームオーバーの時の処理
             GameOver();
-
         }
     }
     
@@ -153,7 +157,6 @@ public class GameManager : MonoBehaviour
             //クリアフラグ
             _gameClear = true;
             //ゲームクリアの時の処理
-            //_fadeManager.StartFadeOut("");  //fadeする
             //クリア時のロゴ？を出す処理をここに書く
 
 
@@ -161,9 +164,8 @@ public class GameManager : MonoBehaviour
             ////シーンのロード
             if (Input.GetKeyDown(KeyCode.Space) && _gameClear) //Spaceキーを押したら
             {
-                SceneManager.LoadScene(_titleSceneName);
-                
-
+                //フェードアウトしてタイトルシーンをロード
+                _fadeManager.StartFadeOut(_titleSceneName);  
             }
 
 
@@ -178,7 +180,6 @@ public class GameManager : MonoBehaviour
         //ゲームオーバーフラグ
         _gameOver = true;
         //ゲームオーバーの時の処理
-        //_fadeManager.StartFadeOut("");  //fadeする
         //クリア時のロゴ？を出す処理をここに書く
 
 
@@ -186,22 +187,18 @@ public class GameManager : MonoBehaviour
         //シーンのロード
         if (Input.GetKeyDown(KeyCode.Space) && _gameOver) //Spaceキーを押したら
         {
-            SceneManager.LoadScene(_titleSceneName);
+            //フェードアウトしてタイトルシーンをロード
+            _fadeManager.StartFadeOut(_titleSceneName);
         }
     }
 
     //titleシーンからfadeしながらInGameシーンへ遷移する処理
     void GameStart() 
     {
-        if (Input.GetKeyDown(KeyCode.Space) && !_inGame && !_startGame && !_gameClear && !_gameOver) //Spaceキーを押したら
+        if (Input.GetKeyDown(KeyCode.Space) && !_inGame && !_gameClear && !_gameOver) //Spaceキーを押したら
         {
             //シーンのロード
             SceneManager.LoadScene(_inGameSceneName);
-            //fade
-            //_fadeManager.StartFadeIn();
-            //InGameシーンで使う処理を有効化する
-            _inGame = true;　//インゲームフラグを有効化
-            _startGame = true;　//ゲームがスタートしたフラグを有効化
         }
     }
 }
