@@ -52,11 +52,12 @@ public class EnemyMove : MonoBehaviour
             _canmove = false;
             _playerpos = collision.gameObject.transform.position;
             _forceDir = (_playerpos - transform.position).normalized;
-            Instantiate(_particle,  new Vector3
+            GameObject _spawnParticle= Instantiate(_particle,  new Vector3
                 ((transform.position.x + _forceDir.x * _halfScale)
                 ,(transform.position.y+_forceDir.y * _halfScale)
                 ,(transform.position.z+_forceDir.z * _halfScale))
                 , Quaternion.identity);
+            _spawnParticle.transform.forward = _forceDir;
             _playersRb = collision.gameObject.GetComponent<Rigidbody>();
             _playersRb.AddForce(_forceDir.x*_enemysPushPower, _upperPower, _forceDir.z*_enemysPushPower, ForceMode.Impulse);
             StartCoroutine(RestartMove());

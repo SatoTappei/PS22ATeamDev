@@ -37,11 +37,12 @@ public class PlayerMove : MonoBehaviour
             _enemy = collision.gameObject;
             _enemyPos = collision.gameObject.transform.position;
             _forceDir = (_enemyPos - transform.position).normalized;
-            Instantiate(_particle, new Vector3
+           GameObject _spawnParticle= Instantiate(_particle, new Vector3
                 ((transform.position.x + _forceDir.x * _halfScale)
                 , (transform.position.y + _forceDir.y * _halfScale)
                 , (transform.position.z + _forceDir.z * _halfScale))
                 , Quaternion.identity);
+            _spawnParticle.transform.forward = _forceDir;
             _enemyRb = _enemy.GetComponent<Rigidbody>();
             _enemyRb.AddForce(_forceDir.x*_pushPower, _upperPower,_forceDir.z *_pushPower, ForceMode.Impulse);
         }
