@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4264186793530797816}
   - component: {fileID: 4264186793530797817}
-  - component: {fileID: 4264186793530797819}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -49,23 +48,7 @@ MonoBehaviour:
   - {fileID: 2727444653913164933, guid: 035700d6ed4b5d045851ce49bb8f186f, type: 3}
   - {fileID: 5298713030854315929, guid: 520424e75391e6943975b8138b27aa9f, type: 3}
   - {fileID: 7732804301567032610, guid: 8fd17caa5e7ec794a8b90783373f201a, type: 3}
-  _spawnPos: {fileID: 857107139828385782, guid: 0460089a903ad134a87d8b8804c7a3fc, type: 3}
   _yRange: -15
-  _inGame: 0
+  _debugMode: 0
   _titleSceneName: Title
   _inGameSceneName: InGame
---- !u!114 &4264186793530797819
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4264186793530797822}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 33979d6a1c64fea4a9f168eae47ca038, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _fadeObject: {fileID: 0}
-  _fadeImage: {fileID: 0}
-  _fadeTime: 3

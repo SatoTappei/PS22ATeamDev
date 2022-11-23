@@ -291,15 +291,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4062594660251988156, guid: 7b31922dc69a80e45bd1ad1ea7b74b31, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -25.1
+      value: -10
       objectReference: {fileID: 0}
     - target: {fileID: 4062594660251988156, guid: 7b31922dc69a80e45bd1ad1ea7b74b31, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 13.9
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4062594660251988156, guid: 7b31922dc69a80e45bd1ad1ea7b74b31, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 4
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4062594660251988156, guid: 7b31922dc69a80e45bd1ad1ea7b74b31, type: 3}
       propertyPath: m_LocalRotation.w
@@ -387,11 +387,7 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4264186793530797817, guid: df7ff1742addf764cb4c96654d0780a7, type: 3}
-      propertyPath: _inGame
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4264186793530797817, guid: df7ff1742addf764cb4c96654d0780a7, type: 3}
-      propertyPath: _startGame
+      propertyPath: _debugMode
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4264186793530797822, guid: df7ff1742addf764cb4c96654d0780a7, type: 3}
@@ -491,6 +487,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1468535240, guid: 8552bfc3cd1f05747b5574bb9bac0783, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8656121051331134483, guid: 8552bfc3cd1f05747b5574bb9bac0783, type: 3}
       propertyPath: m_Name
       value: MainUI

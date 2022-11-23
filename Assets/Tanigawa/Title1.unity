@@ -134,7 +134,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c12f88daf2eb53e4cb3c2fa06ba32dc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1001 &813013627
+--- !u!1001 &442605575
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -186,12 +186,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4264186793530797817, guid: df7ff1742addf764cb4c96654d0780a7, type: 3}
-      propertyPath: _titleSceneName
-      value: Title1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4264186793530797817, guid: df7ff1742addf764cb4c96654d0780a7, type: 3}
-      propertyPath: _inGameSceneName
-      value: InGame1
+      propertyPath: _debugMode
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4264186793530797822, guid: df7ff1742addf764cb4c96654d0780a7, type: 3}
       propertyPath: m_Name

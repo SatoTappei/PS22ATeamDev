@@ -9,7 +9,17 @@ public class UIManager : MonoBehaviour
     public int NowWave //Waveプロパティ
     {
         get => _nowWave;
-        private set => _nowWave = value;
+        private set
+        {
+            if (_nowWave > 2) 
+            {
+                _nowWave = 3;
+            }
+            else 
+            {
+                _nowWave = value;
+            }
+        }
     }
     [Header("最大ウェーブ数")] public int _maxWave = 0;
     int _remainingWave = 0; //残りのWave数
@@ -39,12 +49,6 @@ public class UIManager : MonoBehaviour
         //Popするメニュー
         OnPopMenu();
         OnPopTips();
-        /*
-        //UI操作　それぞれの数値をUIに更新していく
-        OutputNowWave();//現在のWave出力
-        OutputRemainingWave();//残りのWave出力
-        OutputEnemyCount();//敵の数出力
-        */
     }
 
     //現在のウェーブを出力する関数
