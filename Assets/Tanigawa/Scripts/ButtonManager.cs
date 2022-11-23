@@ -3,9 +3,11 @@ using UnityEngine.SceneManagement;
 
 public class ButtonManager : MonoBehaviour
 {
+    [SerializeField] string _sceneName = "Title";
     public void OnRestartButton()
-    { 
-        SceneManager.LoadScene("");//タイトルまたはmainシーンの名前を入れる
+    {
+        Debug.Log("リスタートボタンが押されました。");
+        SceneManager.LoadScene(_sceneName);//タイトルまたはmainシーンの名前を入れる
     }
 
     //ゲームを終了するための関数

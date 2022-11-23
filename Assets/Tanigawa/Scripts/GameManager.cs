@@ -89,6 +89,7 @@ public class GameManager : MonoBehaviour
             _fadeManager = GameObject.Find("MainUI").GetComponent<FadeManager>();  //FadeManager取得
             _fadeManager.StartFadeIn();//fadeinする
             _inGame = true; //インゲームフラグを有効化
+            _debugMode = false;
         }
         
     }
