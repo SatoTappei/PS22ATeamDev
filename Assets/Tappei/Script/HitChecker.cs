@@ -11,13 +11,15 @@ public class HitChecker : MonoBehaviour
     readonly float RayRadius = 0.01f;
     readonly float RayDistance = 100.0f;
 
-    [SerializeField] Transform _checker;
+
     [SerializeField] LayerMask _mask;
 
+    Transform _checker;
     float _prevY = 0;
 
     void Start()
     {
+        _checker = GameObject.FindGameObjectWithTag("Checker").transform;
         _prevY = transform.position.y;
     }
 

@@ -16,7 +16,10 @@ public class TitleManager : MonoBehaviour
 
     void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            SoundManager._instance.FadeOutBGM();
+        }
     }
 
     /// <summary>仮のシーン遷移のメソッド、GameManager側に完成したら消してそっちを使う</summary>
