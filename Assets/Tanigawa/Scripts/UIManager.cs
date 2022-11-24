@@ -9,9 +9,9 @@ public class UIManager : MonoBehaviour
     public int NowWave //Waveプロパティ
     {
         get => _nowWave;
-        private set
+        set
         {
-            if (_nowWave > 2) 
+            if (_nowWave >= 3) 
             {
                 _nowWave = 3;
             }
@@ -37,6 +37,8 @@ public class UIManager : MonoBehaviour
 
     void Start()
     {
+        //値の初期化
+         NowWave = 1;　
         //PopMenu 非表示
         _popMenu.SetActive(false);
         _onPopMenu = false;

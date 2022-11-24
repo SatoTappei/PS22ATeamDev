@@ -18,7 +18,6 @@ public class FadeManager : MonoBehaviour
     public void StartFadeIn()//フェードイン関数
     {
         _fadeImage.DOFade(endValue: 0f, duration: _fadeTime).OnComplete(() => _fadeImage.gameObject.SetActive(false));
-        Debug.Log("a");
     }
 
 

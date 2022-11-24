@@ -11,8 +11,9 @@ public class GameManager : MonoBehaviour
     static GameManager _instance;
 
     //参照
-    UIManager _uIManager;
     FadeManager _fadeManager;
+    UIManager _uIManager;
+    GameObject _uIObj;
 
     //キャラクターのオブジェクト
     GameObject _player; //プレイヤー
@@ -26,14 +27,14 @@ public class GameManager : MonoBehaviour
     float _yRange;
 
     //フラグ関連
-    bool _wave1;    //Wave1のフラグ
-    bool _wave2;    //Wave2のフラグ
-    bool _wave3;    //Wave3のフラグ 
-    bool _inGame;　      //inGameフラグ
-    /*
-    bool _gameClear;    //ゲームのクリアを判定するフラグ
-    bool _gameOver;     //ゲームの終了を判定するフラグ
-    */
+    bool _wave1;        //Wave1のフラグ
+    bool _wave2;        //Wave2のフラグ
+    bool _wave3;        //Wave3のフラグ 
+    bool _inGame;　     //inGameフラグ
+    bool _gameOver;     //GameOverフラグ
+    bool _gameClear;    //GameClearフラグ
+
+    //デバッグ用
     [SerializeField, Tooltip("InGameシーンでテストしたい場合はチェックをつけてください。"),Header("デバッグ用フラグ")]
     bool _debugMode;
 
@@ -41,9 +42,16 @@ public class GameManager : MonoBehaviour
     [SerializeField,Header("タイトルシーンの名前")] string _titleSceneName = "Title";
     [SerializeField, Header("ゲームシーンの名前")] string _inGameSceneName = "InGame";
 
-    //GameOverとGameClearのシーンのボタンのオブジェクト
+    //GameOverとGameClearのシーンのオブジェクトのプレハブ
     [SerializeField, Header("GameClearのキャンバスのプレハブ")] GameObject _gameClearCanvas;
     [SerializeField, Header("GameOverのキャンバスのプレハブ")] GameObject _gameOverCanvas;
+
+    //Menuのボタン
+    Button _restartButton;
+    Button _quitButton;
+    //GameOverとGameClearのシーンのボタン
+    Button _titleButton;
+    Button _retryButton;
 
     void Awake()
     {
@@ -61,8 +69,13 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        //イベントにメッソド追加
+        //イベントにメッソドを登録
         SceneManager.sceneLoaded += OnlyOnceMethod;
+
+        //フラグの初期化
+        _inGame = false;
+        _gameOver = false;
+        _gameClear = false;
     }
 
     void Update()
@@ -75,7 +88,7 @@ public class GameManager : MonoBehaviour
         {
             //キャラクターの処理
             PlayerKill();//playerが死んだときの処理
-            
+
             //Wave関連
             WaveChange();
 
@@ -83,34 +96,44 @@ public class GameManager : MonoBehaviour
             GameClear();
 
             //UI操作　それぞれの数値をUIに更新していく
-            _uIManager.OutputNowWave();//現在のWave出力
-            _uIManager.OutputRemainingWave();//残りのWave出力
-            _uIManager.OutputEnemyCount();//敵の数出力
+            _uIManager.OutputNowWave();                     //現在のWave出力
+            _uIManager.OutputRemainingWave();               //残りのWave出力
+            _uIManager.OutputEnemyCount();                  //敵の数出力
         }
-        
+
         //InGameシーンからテストしたい時のフラグがOnになった時に行われる処理　（ゲームには関係ない処理）
-        if (_debugMode) 
-        {
-            Debug.Log("OnlyOnceMethodが実行された");
-            _player = GameObject.FindWithTag("Player");                             //プレイヤー取得
-            _uIManager = GameObject.Find("MainUI").GetComponent<UIManager>();       //UIManager取得
-            _fadeManager = GameObject.Find("MainUI").GetComponent<FadeManager>();  //FadeManager取得
-            _fadeManager.StartFadeIn();//fadeinする
-            _inGame = true; //インゲームフラグを有効化
-            _debugMode = false;
-        }
-        
+        OnlyDebug();
+
     }
 
     //TitleシーンからInGameシーンへ遷移したときに１度だけ呼び出される関数
     void OnlyOnceMethod(Scene nextScene, LoadSceneMode mode)
     {
-        Debug.Log("OnlyOnceMethodが実行された");
-        _player = GameObject.FindWithTag("Player");                             //プレイヤー取得
-        _uIManager = GameObject.Find("MainUI").GetComponent<UIManager>();       //UIManager取得
-        _fadeManager = GameObject.Find("MainUI").GetComponent<FadeManager>();  //FadeManager取得
-        _fadeManager.StartFadeIn();//fadeinする
-        _inGame = true; //インゲームフラグを有効化
+        if (nextScene.name == _inGameSceneName) 
+        {
+            Debug.Log("OnlyOnceMethodが実行された");
+            _player = GameObject.FindWithTag("Player");                                 //プレイヤー取得
+            _uIObj = GameObject.Find("MainUI");                                         //UIのゲームオブジェクト取得
+            _uIManager = _uIObj.GetComponent<UIManager>();                              //UIManager取得
+            _fadeManager = _uIObj.GetComponent<FadeManager>();                          //FadeManager取得
+            _fadeManager.StartFadeIn();                                                 //fadeinする
+            _restartButton = GameObject.Find("RestartButton").GetComponent<Button>();   //RestartButtonr取得
+            _restartButton.onClick.AddListener(OnClickButton);                          //ボタンにイベントをセット
+            _quitButton = GameObject.Find("QuitButton").GetComponent<Button>();         //QuitButtonr取得
+            _quitButton.onClick.AddListener(OnQuitButton);                              //ボタンにイベントをセット
+            SoundManager._instance.Play("BGMゲーム中");                                 // BGM再生
+            _inGame = true;                                                             //インゲームフラグを有効化
+
+        }
+
+        if (nextScene.name == _titleSceneName) 
+        {
+            //フラグの初期化
+            _inGame = false;
+            _gameOver = false;
+            _gameClear = false;
+        }
+        
     }
 
     //敵の生成を管理する関数
@@ -161,37 +184,81 @@ public class GameManager : MonoBehaviour
     {
         if (_uIManager.NowWave == _uIManager._maxWave && _uIManager.EnemyCount() == 0) 
         {
+            //ゲームクリアフラグ有効化
+            _gameOver = true;
             //ゲームを止める
             _inGame = false;
-            /*
-            //クリアフラグ
-            _gameClear = true;
-            */
+            //BGM停止
+            SoundManager._instance.FadeOutBGM();
             //ゲームクリアの時の処理
             Instantiate(_gameClearCanvas);
+            //生成したオブジェクトからボタンを探してとってくる
+            _titleButton = GameObject.Find("TitleButton").GetComponent<Button>();
+            //ボタンにイベントをセット
+            _titleButton.onClick.AddListener(OnClickButton);
         }
     }
 
     //GameOver の時の処理を描く
     void GameOver() 
     {
+        //ゲームオーバーフラグ有効化
+        _gameOver = true;
         //ゲームを止める
         _inGame = false;
-        /*
-        //ゲームオーバーフラグ
-        _gameOver = true;
-        */
+        //BGM停止
+        SoundManager._instance.FadeOutBGM();
         //ゲームオーバーの時の処理
         Instantiate(_gameOverCanvas);
+        //生成したオブジェクトからボタンを探してとってくる
+        _retryButton = GameObject.Find("RetryButton").GetComponent<Button>();
+        //ボタンにイベントをセット
+        _retryButton.onClick.AddListener(OnClickButton);
     }
 
     //titleシーンからfadeしながらInGameシーンへ遷移する処理
     void GameStart() 
     {
-        if (Input.GetKeyDown(KeyCode.Space) && !_inGame) //Spaceキーを押したら
+        if (Input.GetKeyDown(KeyCode.Space) && !_inGame　&& !_gameOver && !_gameClear)       //Spaceキーを押したら
         {
             //シーンのロード
             SceneManager.LoadScene(_inGameSceneName);
+        }
+    }
+
+    //ゲームを終了するためのボタンの関数
+    public void OnQuitButton()
+    {
+        //ゲームを終了する
+        Application.Quit();
+    }
+
+    //タイトルに戻るボタンの処理
+    public void OnClickButton()
+    {
+        //タイトルシーンをロードする
+        SceneManager.LoadScene(_titleSceneName);
+    }
+
+    //デバッグ用の処理
+    void OnlyDebug()
+    {
+        if (_debugMode　&& SceneManager.GetActiveScene().name == _inGameSceneName)
+        {
+            Debug.Log("OnlyDebugが実行された");
+            _player = GameObject.FindWithTag("Player");                                 //プレイヤー取得
+            _uIObj = GameObject.Find("MainUI");                                         //UIのゲームオブジェクト取得
+            _uIManager = _uIObj.GetComponent<UIManager>();                              //UIManager取得
+            _fadeManager = _uIObj.GetComponent<FadeManager>();                          //FadeManager取得
+            _fadeManager.StartFadeIn();                                                 //fadeinする
+            _restartButton = GameObject.Find("RestartButton").GetComponent<Button>();   //RestartButtonr取得
+            _restartButton.onClick.AddListener(OnClickButton);                          //ボタンにイベントをセット
+            _quitButton = GameObject.Find("QuitButton").GetComponent<Button>();         //QuitButtonr取得
+            _quitButton.onClick.AddListener(OnQuitButton);                              //ボタンにイベントをセット
+            _inGame = true;                                                             //インゲームフラグを有効化
+            _gameOver = false;                                                          //ゲームオーバーフラグ無効化
+            _gameClear = false;                                                         //ゲームクリアフラグ無効化
+            _debugMode = false;                                                         //デバッグ用フラグ無効化
         }
     }
 }
