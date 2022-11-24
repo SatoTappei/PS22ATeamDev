@@ -256,6 +256,7 @@ public class GameManager : MonoBehaviour
             _restartButton.onClick.AddListener(OnClickButton);                          //ボタンにイベントをセット
             _quitButton = GameObject.Find("QuitButton").GetComponent<Button>();         //QuitButtonr取得
             _quitButton.onClick.AddListener(OnQuitButton);                              //ボタンにイベントをセット
+            SoundManager._instance.Play("BGMゲーム中");                                 // BGM再生
             _inGame = true;                                                             //インゲームフラグを有効化
             _gameOver = false;                                                          //ゲームオーバーフラグ無効化
             _gameClear = false;                                                         //ゲームクリアフラグ無効化
