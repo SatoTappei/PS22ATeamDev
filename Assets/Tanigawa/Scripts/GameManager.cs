@@ -111,7 +111,7 @@ public class GameManager : MonoBehaviour
     {
         if (nextScene.name == _inGameSceneName) 
         {
-            Debug.Log("OnlyOnceMethodが実行された");
+            //Debug.Log("OnlyOnceMethodが実行された");
             _player = GameObject.FindWithTag("Player");                                 //プレイヤー取得
             _uIObj = GameObject.Find("MainUI");                                         //UIのゲームオブジェクト取得
             _uIManager = _uIObj.GetComponent<UIManager>();                              //UIManager取得
@@ -238,6 +238,7 @@ public class GameManager : MonoBehaviour
     {
         //タイトルシーンをロードする
         SceneManager.LoadScene(_titleSceneName);
+        Destroy(gameObject);
     }
 
     //デバッグ用の処理
