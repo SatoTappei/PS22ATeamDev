@@ -523,7 +523,7 @@ MonoBehaviour:
     volume: 0.33
   - key: "BGM_\u30B2\u30FC\u30E0\u4E2D"
     clip: {fileID: 8300000, guid: 1ede74da873cf8a48b902caf57f895b6, type: 3}
-    volume: 0.33
+    volume: 0.1
   - key: "SE_\u30A2\u30A4\u30C6\u30E0\u7372\u5F97"
     clip: {fileID: 8300000, guid: 5df823c22e8e60a49b812a69088fd3d4, type: 3}
     volume: 0.33
