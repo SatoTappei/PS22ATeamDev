@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4653950744116102633}
   - component: {fileID: 4653950744116102632}
   - component: {fileID: 4653950744116102639}
+  - component: {fileID: 6630482930975071954}
   m_Layer: 0
   m_Name: UpperEnemy
   m_TagString: Enemy
@@ -134,3 +135,19 @@ MonoBehaviour:
   _waitTimer: 3
   _movePower: 5
   _upperPower: 7
+--- !u!114 &6630482930975071954
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4653950744116102638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73e3e6d67c7b05843897c37be2dcad0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _checker: {fileID: 4653950744116102628}
+  _mask:
+    serializedVersion: 2
+    m_Bits: 16

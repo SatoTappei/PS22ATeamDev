@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4062594660251988153}
   - component: {fileID: 4062594660251988157}
   - component: {fileID: 4062594660251988146}
+  - component: {fileID: 5817384106416284674}
   m_Layer: 0
   m_Name: DefaltPlayer
   m_TagString: Player
@@ -131,5 +132,20 @@ MonoBehaviour:
   _upperPower: 3
   _pushPowerUp: 2
   _enemyTag: Enemy
-  _itemTag: Item
   _particle: {fileID: 3449359250790683093, guid: cff5feb0305d02643b0f8d08f80faed0, type: 3}
+--- !u!114 &5817384106416284674
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4062594660251988152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73e3e6d67c7b05843897c37be2dcad0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _checker: {fileID: 4062594660251988156}
+  _mask:
+    serializedVersion: 2
+    m_Bits: 16
