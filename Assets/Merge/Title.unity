@@ -529,7 +529,7 @@ MonoBehaviour:
     volume: 0.33
   - key: "SE_\u885D\u7A81"
     clip: {fileID: 8300000, guid: 445bb5f331d788545ad2100931d605e8, type: 3}
-    volume: 0.33
+    volume: 1
   _distance: 0.05
 --- !u!224 &403978046481237798
 RectTransform:
