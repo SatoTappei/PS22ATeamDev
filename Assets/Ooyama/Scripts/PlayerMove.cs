@@ -14,12 +14,14 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] string _enemyTag = "Enemy";
     [SerializeField] GameObject _particle;
     [SerializeField] float _plusPower = 3f;
+    [SerializeField] float _waitTimer = 5f;
     Vector3 _enemyPos;
     Vector3 _forceDir;
     float _pushXPower = 0;
     float _pushZPower = 0;
     float _xLimitSpeed = 2;
     float _zLimitSpeed = 2;
+    bool _canAddForse;
     void Start()
     {
         _playerRb = GetComponent<Rigidbody>();
@@ -35,9 +37,11 @@ public class PlayerMove : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if(Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
+        if(_canAddForse)
         {
             _playerRb.AddForce(_pushXPower,0,_pushZPower,ForceMode.Impulse);
+            _canAddForse = false;
+            StartCoroutine(AddForceTimer());
         }
         else
         {
@@ -62,5 +66,10 @@ public class PlayerMove : MonoBehaviour
             _enemyRb = _enemy.GetComponent<Rigidbody>();
             _enemyRb.AddForce(_forceDir.x*_pushPower, _upperPower,_forceDir.z *_pushPower, ForceMode.Impulse);
         }
+    }
+    IEnumerator AddForceTimer()
+    {
+        yield return new WaitForSeconds(_waitTimer);
+        _canAddForse = true;
     }
 }
