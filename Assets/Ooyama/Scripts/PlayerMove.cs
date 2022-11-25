@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PlayerMove : MonoBehaviour
 {
-    bool _gameover;
     GameObject _enemy;
     Rigidbody _playerRb;
     Rigidbody _enemyRb;
@@ -36,11 +35,14 @@ public class PlayerMove : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        _playerRb.velocity = new Vector3
-            (Mathf.Clamp((_playerRb.velocity.x + _pushXPower),-_xLimitSpeed,_xLimitSpeed), 
-            _playerRb.velocity.y, 
-            Mathf.Clamp((_playerRb.velocity.z + _pushZPower),-_zLimitSpeed,_zLimitSpeed));
-        //_playerRb.velocity = new Vector3(_playerRb.velocity.x, _playerRb.velocity.y, _playerRb.velocity.z);        
+        if(Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
+        {
+            _playerRb.AddForce(_pushXPower,0,_pushZPower,ForceMode.Impulse);
+        }
+        else
+        {
+            _playerRb.velocity = new Vector3(_playerRb.velocity.x, _playerRb.velocity.y, _playerRb.velocity.z);  
+        }
     }
     private void OnCollisionEnter(Collision collision)
     {
