@@ -14,8 +14,11 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] public float _pushPowerUp = 2f;
     [SerializeField] string _enemyTag = "Enemy";
     [SerializeField] GameObject _particle;
+    [SerializeField] float _plusPower = 3f;
     Vector3 _enemyPos;
     Vector3 _forceDir;
+    float _pushXPower = 0;
+    float _pushZPower = 0;
     void Start()
     {
         _playerRb = GetComponent<Rigidbody>();
@@ -23,10 +26,15 @@ public class PlayerMove : MonoBehaviour
     }
     void Update()
     {
-        if(_gameover==true)
+        if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
         {
-            GameOver();
-        }
+            float _pushXPower = Input.GetAxis("Horizontal") * _plusPower;
+            float _pushZPower = Input.GetAxis("Vertical") * _plusPower;
+        }      
+    }
+    private void FixedUpdate()
+    {
+        _playerRb.velocity = new Vector3(_playerRb.velocity.x + _pushXPower, _playerRb.velocity.y, _playerRb.velocity.z + _pushZPower);
     }
     private void OnCollisionEnter(Collision collision)
     {
@@ -46,11 +54,5 @@ public class PlayerMove : MonoBehaviour
             _enemyRb = _enemy.GetComponent<Rigidbody>();
             _enemyRb.AddForce(_forceDir.x*_pushPower, _upperPower,_forceDir.z *_pushPower, ForceMode.Impulse);
         }
-    }
-    
-       
-    void GameOver()
-    {
-
     }
 }
