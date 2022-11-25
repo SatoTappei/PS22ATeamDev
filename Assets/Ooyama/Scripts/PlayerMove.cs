@@ -19,6 +19,8 @@ public class PlayerMove : MonoBehaviour
     Vector3 _forceDir;
     float _pushXPower = 0;
     float _pushZPower = 0;
+    float _xLimitSpeed = 2;
+    float _zLimitSpeed = 2;
     void Start()
     {
         _playerRb = GetComponent<Rigidbody>();
@@ -28,13 +30,17 @@ public class PlayerMove : MonoBehaviour
     {
         if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
         {
-            float _pushXPower = Input.GetAxis("Horizontal") * _plusPower;
-            float _pushZPower = Input.GetAxis("Vertical") * _plusPower;
+            _pushXPower = Input.GetAxis("Horizontal") * _plusPower;
+            _pushZPower = Input.GetAxis("Vertical") * _plusPower;
         }      
     }
     private void FixedUpdate()
     {
-        _playerRb.velocity = new Vector3(_playerRb.velocity.x + _pushXPower, _playerRb.velocity.y, _playerRb.velocity.z + _pushZPower);
+        _playerRb.velocity = new Vector3
+            (Mathf.Clamp((_playerRb.velocity.x + _pushXPower),-_xLimitSpeed,_xLimitSpeed), 
+            _playerRb.velocity.y, 
+            Mathf.Clamp((_playerRb.velocity.z + _pushZPower),-_zLimitSpeed,_zLimitSpeed));
+        //_playerRb.velocity = new Vector3(_playerRb.velocity.x, _playerRb.velocity.y, _playerRb.velocity.z);        
     }
     private void OnCollisionEnter(Collision collision)
     {
@@ -54,5 +60,10 @@ public class PlayerMove : MonoBehaviour
             _enemyRb = _enemy.GetComponent<Rigidbody>();
             _enemyRb.AddForce(_forceDir.x*_pushPower, _upperPower,_forceDir.z *_pushPower, ForceMode.Impulse);
         }
+    }
+    void Clamp()
+    {
+        _xLimitSpeed = Mathf.Clamp(_playerRb.velocity.x,-2,2);
+        _zlimitSpeed = Mathf.Clamp(_playerRb.velocity.z,-2,2);
     }
 }
