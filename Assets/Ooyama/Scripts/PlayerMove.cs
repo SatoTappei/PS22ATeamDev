@@ -61,9 +61,4 @@ public class PlayerMove : MonoBehaviour
             _enemyRb.AddForce(_forceDir.x*_pushPower, _upperPower,_forceDir.z *_pushPower, ForceMode.Impulse);
         }
     }
-    void Clamp()
-    {
-        _xLimitSpeed = Mathf.Clamp(_playerRb.velocity.x,-2,2);
-        _zlimitSpeed = Mathf.Clamp(_playerRb.velocity.z,-2,2);
-    }
 }
