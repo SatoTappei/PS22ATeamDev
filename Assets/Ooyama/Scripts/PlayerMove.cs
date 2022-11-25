@@ -53,6 +53,7 @@ public class PlayerMove : MonoBehaviour
         if(collision.gameObject.tag==_enemyTag)
         {
             //“G‚ÆÕ“Ë‚µ‚½‚Ìˆ—
+            CameraShaker.Shake();
             SoundManager._instance.Play("SE_Õ“Ë");
             _enemy = collision.gameObject;
             _enemyPos = collision.gameObject.transform.position;
