@@ -21,7 +21,7 @@ public class PlayerMove : MonoBehaviour
     float _pushZPower = 0;
     float _xLimitSpeed = 2;
     float _zLimitSpeed = 2;
-    bool _canAddForse;
+    bool _canAddForse =true;
     void Start()
     {
         _playerRb = GetComponent<Rigidbody>();
