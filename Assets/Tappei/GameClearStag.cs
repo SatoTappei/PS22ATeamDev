@@ -31,7 +31,7 @@ public class GameClearStag : MonoBehaviour
             yield return child.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutBounce).SetDelay(0.5f).WaitForCompletion();
         }
 
-        Instantiate(_particle, Vector3.zero, Quaternion.identity);
+        Instantiate(_particle, new Vector3(0, 33, -40), Quaternion.identity);
     }
 
     void Update()

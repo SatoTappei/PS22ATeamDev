@@ -48,9 +48,9 @@ public class CameraShaker : MonoBehaviour
         DOTween.Shake(
             () => _shakeAngles,             // ŠJŽnŽž‚Ì’l
             shake => _shakeAngles = shake,  // ƒpƒ‰ƒ[ƒ^‚ÌXV
-            0.15f,                       // Ž‘±ŽžŠÔ
-            new Vector3(3, 3, 0),                       // —h‚ê‚Ì‹­‚³
-            5)                       // ‚Ç‚Ì‚­‚ç‚¢U“®‚·‚é‚©
+            0.15f,                          // Ž‘±ŽžŠÔ
+            new Vector3(3, 3, 0),           // —h‚ê‚Ì‹­‚³
+            5)                              // ‚Ç‚Ì‚­‚ç‚¢U“®‚·‚é‚©
             .OnComplete(() => _shakeAngles = Vector3.zero);
     }
 }
